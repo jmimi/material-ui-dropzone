@@ -362,13 +362,14 @@ var DropzoneArea = /*#__PURE__*/function (_React$PureComponent) {
 
     _this.filesArray = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(urls) {
-        var fileObjs;
+        var fileLoaderFn, fileObjs;
         return _regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
-                _context2.next = 3;
+                fileLoaderFn = typeof _this.props.loadFile === 'function' ? _this.props.loadFile : createFileFromUrl;
+                _context2.next = 4;
                 return Promise.all(urls.map( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(url) {
                     var file, data;
@@ -377,7 +378,7 @@ var DropzoneArea = /*#__PURE__*/function (_React$PureComponent) {
                         switch (_context.prev = _context.next) {
                           case 0:
                             _context.next = 2;
-                            return createFileFromUrl(url);
+                            return fileLoaderFn(url);
 
                           case 2:
                             file = _context.sent;
@@ -404,7 +405,7 @@ var DropzoneArea = /*#__PURE__*/function (_React$PureComponent) {
                   };
                 }()));
 
-              case 3:
+              case 4:
                 fileObjs = _context2.sent;
 
                 _this.setState(function (state) {
@@ -422,20 +423,20 @@ var DropzoneArea = /*#__PURE__*/function (_React$PureComponent) {
                   }
                 });
 
-                _context2.next = 10;
+                _context2.next = 11;
                 break;
 
-              case 7:
-                _context2.prev = 7;
+              case 8:
+                _context2.prev = 8;
                 _context2.t0 = _context2["catch"](0);
                 console.log(_context2.t0);
 
-              case 10:
+              case 11:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 7]]);
+        }, _callee2, null, [[0, 8]]);
       }));
 
       return function (_x) {
@@ -923,6 +924,14 @@ process.env.NODE_ENV !== "production" ? DropzoneArea.propTypes = {
    * @param {number} maxFileSize The `maxFileSize` prop currently set for the component
    */
   getDropRejectMessage: PropTypes.func,
+
+  /**
+   * Delegates loading file to client. The internal mechanism is loading by fetching file directly.
+   * Sometimes it's not sufficient and client needs to load itself.
+   *
+   * @param {String} The url of file
+   */
+  loadFile: PropTypes.func,
 
   /**
    * Fired when the files inside dropzone change.

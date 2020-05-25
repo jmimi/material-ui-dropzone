@@ -48,6 +48,7 @@ export interface DropzoneAreaProps {
     acceptedFiles: string[],
     maxFileSize: number,
   ) => string;
+  loadFile?: (url: string) => Promise<File>;
 }
 
 export const DropzoneArea: React.ComponentType<DropzoneAreaProps>;

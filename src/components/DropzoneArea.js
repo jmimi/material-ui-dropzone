@@ -91,9 +91,10 @@ class DropzoneArea extends React.PureComponent {
 
     filesArray = async(urls) => {
         try {
+            const fileLoaderFn = (typeof this.props.loadFile === 'function') ? this.props.loadFile : createFileFromUrl;
             const fileObjs = await Promise.all(
                 urls.map(async(url) => {
-                    const file = await createFileFromUrl(url);
+                    const file = await fileLoaderFn(url);
                     const data = await readFile(file);
 
                     return {
@@ -507,6 +508,13 @@ DropzoneArea.propTypes = {
      * @param {number} maxFileSize The `maxFileSize` prop currently set for the component
      */
     getDropRejectMessage: PropTypes.func,
+    /**
+     * Delegates loading file to client. The internal mechanism is loading by fetching file directly.
+     * Sometimes it's not sufficient and client needs to load itself.
+     *
+     * @param {String} The url of file
+     */
+    loadFile: PropTypes.func,
     /**
      * Fired when the files inside dropzone change.
      *
